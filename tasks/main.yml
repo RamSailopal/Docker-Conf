@@ -62,4 +62,3 @@
       cmd: docker-compose down -v && docker-compose up -d
       executable: /bin/bash
       chdir: /opt/Docker/
-
