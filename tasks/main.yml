@@ -1,0 +1,70 @@
+---
+# tasks file for Docker-Conf
+  - name: Set the hostname
+    hostname:
+      name: "{{ hstname }}"
+  - name: Install packages
+    apt:
+      name: "{{ item }}"
+      state: present
+      update-cache: yes
+    with_items:
+      - "docker"
+      - "ufw"
+      - "python3-pip"
+      - "docker.io"
+  - name: Open port 22 for ssh
+    ufw:
+      rule: allow
+      port: "{{ item }}"
+      proto: tcp
+    with_items:
+      - 22
+  - name: Initialise rate limiting on port 22
+    ufw:
+      rule: limit
+      port: 22
+      proto: tcp
+  - name: Now enable the firewall
+    ufw:
+      state: enabled
+  - name: Install Python docker dependancy
+    pip:
+     name: "{{ item }}"
+    with_items:
+     - "docker"
+     - "docker-compose"
+  - name: Start services
+    systemd:
+      name: "{{ item }}"
+      state: started
+    with_items:
+      - "docker"
+  - name: Create the Docker directory on server
+    file:
+      path: /opt/Docker
+      state: directory
+  - name: Create docker compose directory
+    synchronize:
+      src: Docker/
+      dest: /opt/Docker
+  - name: Change the ownership on the Docker folder
+    file:
+      path: /opt/Docker
+      recurse: yes
+      owner: 1001
+  - name: Run open vscode server in docker container
+    community.docker.docker_compose:
+      project_src: /opt/Docker
+      restarted: yes
+  - name: Check that VScode is accessible
+    uri:
+      url: "http://{{ hostvars['localhost']['my_linode'].instance.ipv4[0] }}:3002?tkn={{ vspass | split('=') | last }}"
+      method: GET
+      force_basic_auth: yes
+      validate_certs: no
+      status_code: [200]
+    register: result
+    until: result.status == 200
+    retries: 5
+    delay: 300

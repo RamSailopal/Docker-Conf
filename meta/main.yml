@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Raman Sailopal
+  description: Configuration as Code for provision of Docker environment on Ubuntu 
+
+  license: MIT
+
+  min_ansible_version: 2.9
+
+  platforms:
+    - name: Ubuntu
+      versions:
+      - all
+
+  galaxy_tags:
+    - Docker
+
+dependencies: []
