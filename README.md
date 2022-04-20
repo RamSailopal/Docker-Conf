@@ -1,32 +1,28 @@
 # Role Name
 =========
 
-Ansible role to install Docker bench security on Ubuntu and then run the audit against running containers.
+Ansible role to set up Docker environment on Ubuntu.
 
 
 # Role Variables
 --------------
 
-**repdir** - The directory to pull the final report into. 
+**hstname** - The hostname of the server. 
 
 # Running the role
 ---------------
 
     - hosts: servers
       roles: 
-        - Docker-CaC
+        - Docker-Conf
       vars:
-        repdir: /tmp
+        hstname: myserver
 
 # License
 -------
 
 BSD
 
-# References
-------------------
-
-Docker Bench Security - https://github.com/docker/docker-bench-security
 
 # Author Information
 ------------------
