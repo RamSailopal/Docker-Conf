@@ -53,7 +53,7 @@
       path: /opt/Docker
       recurse: yes
       owner: 1001
-  - name: Run open vscode server in docker container
+  - name: Run Docker containers
     community.docker.docker_compose:
       project_src: /opt/Docker
       restarted: yes
