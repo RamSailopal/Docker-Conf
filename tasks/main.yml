@@ -57,6 +57,7 @@
     community.docker.docker_compose:
       project_src: /opt/Docker
       restarted: yes
+    ignore_errors: yes
   - name: Restart docker compose again 
     shell:
       cmd: docker-compose down -v && docker-compose up -d
